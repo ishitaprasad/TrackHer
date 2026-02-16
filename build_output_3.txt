@@ -1,0 +1,69 @@
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :app:generateDebugResources
+> Task :app:packageDebugResources
+> Task :app:processDebugNavigationResources
+> Task :app:generateDebugAssets UP-TO-DATE
+> Task :app:javaPreCompileDebug
+> Task :app:parseDebugLocalResources
+> Task :app:mergeDebugAssets
+> Task :app:compressDebugAssets
+> Task :app:generateDebugRFile
+> Task :app:checkDebugDuplicateClasses
+> Task :app:desugarDebugFileDependencies
+> Task :app:compileDebugKotlin
+> Task :app:mergeExtDexDebug
+
+> Task :app:compileDebugKotlin FAILED
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/MainActivity.kt:32:13 Overload resolution ambiguity between candidates:
+fun SplashScreen(onTimeout: () -> Unit): Unit
+fun SplashScreen(onTimeout: () -> Unit = ...): Unit
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/MainActivity.kt:72:13 Overload resolution ambiguity between candidates:
+fun PersonalDetailsScreen1(onNextClicked: () -> Unit): Unit
+fun PersonalDetailsScreen1(onNextClicked: () -> Unit): Unit
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/MainActivity.kt:79:13 Overload resolution ambiguity between candidates:
+fun PersonalDetailsScreen2(onSubmitClicked: () -> Unit): Unit
+fun PersonalDetailsScreen2(onSubmitClicked: () -> Unit): Unit
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/PersonalDetails.kt:30:1 Conflicting overloads:
+fun PersonalDetailsScreen1(onNextClicked: () -> Unit): Unit
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/PersonalDetails.kt:83:1 Conflicting overloads:
+fun PersonalDetailsScreen2(onSubmitClicked: () -> Unit): Unit
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/PersonalDetails.kt:140:5 Overload resolution ambiguity between candidates:
+fun PersonalDetailsScreen1(onNextClicked: () -> Unit): Unit
+fun PersonalDetailsScreen1(onNextClicked: () -> Unit): Unit
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/PersonalDetails.kt:146:5 Overload resolution ambiguity between candidates:
+fun PersonalDetailsScreen2(onSubmitClicked: () -> Unit): Unit
+fun PersonalDetailsScreen2(onSubmitClicked: () -> Unit): Unit
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/Placeholders.kt:18:1 Conflicting overloads:
+fun SplashScreen(onTimeout: () -> Unit = ...): Unit
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/Placeholders.kt:74:1 Conflicting overloads:
+fun PersonalDetailsScreen1(onNextClicked: () -> Unit): Unit
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/Placeholders.kt:83:1 Conflicting overloads:
+fun PersonalDetailsScreen2(onSubmitClicked: () -> Unit): Unit
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/SplashScreen.kt:23:1 Conflicting overloads:
+fun SplashScreen(onTimeout: () -> Unit): Unit
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/components/Footer.kt:11:60 Unresolved reference 'TrendingUp'.
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/components/Footer.kt:12:47 Unresolved reference 'CalendarToday'.
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/components/Footer.kt:13:47 Unresolved reference 'ChatBubbleOutline'.
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/components/Footer.kt:15:47 Unresolved reference 'TrendingUp'.
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/components/Footer.kt:31:12 Unresolved reference 'google'.
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/components/Footer.kt:56:48 Unresolved reference 'CalendarToday'.
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/components/Footer.kt:67:61 Unresolved reference 'TrendingUp'.
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/components/Footer.kt:78:48 Unresolved reference 'ChatBubbleOutline'.
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:compileDebugKotlin'.
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
+   > Compilation error. See log for more details
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to generate a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 3m 34s
+12 actionable tasks: 12 executed

@@ -1,0 +1,57 @@
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:generateDebugResources UP-TO-DATE
+> Task :app:packageDebugResources UP-TO-DATE
+> Task :app:processDebugNavigationResources UP-TO-DATE
+> Task :app:parseDebugLocalResources UP-TO-DATE
+> Task :app:generateDebugRFile UP-TO-DATE
+
+> Task :app:compileDebugKotlin FAILED
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/HomeModule/HomePage.kt:29:37 Unresolved reference 'compose'.
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/HomeModule/HomePage.kt:34:43 Unresolved reference 'viewModel'.
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/MainActivity.kt:9:17 Unresolved reference 'navigation'.
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/MainActivity.kt:10:17 Unresolved reference 'navigation'.
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/MainActivity.kt:11:17 Unresolved reference 'navigation'.
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/MainActivity.kt:27:25 Unresolved reference 'rememberNavController'.
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/MainActivity.kt:29:5 Unresolved reference 'NavHost'.
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/MainActivity.kt:31:9 Unresolved reference 'composable'.
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/MainActivity.kt:32:13 @Composable invocations can only happen from the context of a @Composable function
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/MainActivity.kt:35:25 Unresolved reference 'popUpTo'.
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/MainActivity.kt:35:51 Unresolved reference 'inclusive'.
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/MainActivity.kt:40:9 Unresolved reference 'composable'.
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/MainActivity.kt:41:13 @Composable invocations can only happen from the context of a @Composable function
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/MainActivity.kt:47:9 Unresolved reference 'composable'.
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/MainActivity.kt:48:13 @Composable invocations can only happen from the context of a @Composable function
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/MainActivity.kt:57:9 Unresolved reference 'composable'.
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/MainActivity.kt:58:13 @Composable invocations can only happen from the context of a @Composable function
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/MainActivity.kt:67:9 Unresolved reference 'composable'.
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/MainActivity.kt:68:13 @Composable invocations can only happen from the context of a @Composable function
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/MainActivity.kt:71:9 Unresolved reference 'composable'.
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/MainActivity.kt:72:13 @Composable invocations can only happen from the context of a @Composable function
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/MainActivity.kt:78:9 Unresolved reference 'composable'.
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/MainActivity.kt:79:13 @Composable invocations can only happen from the context of a @Composable function
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/SplashScreen.kt:17:26 Unresolved reference 'R'.
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/components/Footer.kt:11:60 Unresolved reference 'TrendingUp'.
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/components/Footer.kt:12:47 Unresolved reference 'CalendarToday'.
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/components/Footer.kt:13:47 Unresolved reference 'ChatBubbleOutline'.
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/components/Footer.kt:15:47 Unresolved reference 'TrendingUp'.
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/components/Footer.kt:31:12 Unresolved reference 'google'.
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/components/Footer.kt:56:48 Unresolved reference 'CalendarToday'.
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/components/Footer.kt:67:61 Unresolved reference 'TrendingUp'.
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/components/Footer.kt:78:48 Unresolved reference 'ChatBubbleOutline'.
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:compileDebugKotlin'.
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
+   > Compilation error. See log for more details
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to generate a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 4s
+6 actionable tasks: 1 executed, 5 up-to-date

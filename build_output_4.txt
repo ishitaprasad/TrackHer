@@ -1,0 +1,43 @@
+Starting a Gradle Daemon, 1 busy Daemon could not be reused, use --status for details
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :app:generateDebugResources
+> Task :app:packageDebugResources
+> Task :app:processDebugNavigationResources
+> Task :app:generateDebugAssets UP-TO-DATE
+> Task :app:javaPreCompileDebug
+> Task :app:parseDebugLocalResources
+> Task :app:mergeDebugAssets
+> Task :app:compressDebugAssets
+> Task :app:generateDebugRFile
+> Task :app:checkDebugDuplicateClasses
+> Task :app:desugarDebugFileDependencies
+> Task :app:compileDebugKotlin
+> Task :app:mergeExtDexDebug
+
+> Task :app:compileDebugKotlin FAILED
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/MainActivity.kt:18:13 Unresolved reference 'MajorTheme'.
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/MainActivity.kt:19:17 @Composable invocations can only happen from the context of a @Composable function
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/MainActivity.kt:41:13 Unresolved reference 'OnBoardingScreen'.
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/MainActivity.kt:48:13 Unresolved reference 'SignInScreen'.
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/MainActivity.kt:58:13 Unresolved reference 'RegisterScreen'.
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/MainActivity.kt:68:13 Unresolved reference 'HomeScreen'.
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/MainActivity.kt:92:5 Unresolved reference 'MajorTheme'.
+e: file:///C:/Users/swana/AndroidStudioProjects/MyApplication/app/src/main/java/com/example/myapplication/MainActivity.kt:93:9 @Composable invocations can only happen from the context of a @Composable function
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:compileDebugKotlin'.
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
+   > Compilation error. See log for more details
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to generate a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 12m 15s
+12 actionable tasks: 12 executed
