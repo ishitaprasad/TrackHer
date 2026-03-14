@@ -15,6 +15,7 @@ import com.example.myapplication.onboarding.OnBoardingScreen
 import com.example.myapplication.onboarding.SignInScreen
 import com.example.myapplication.onboarding.RegisterScreen
 import com.example.myapplication.OnBoardingModule.SplashScreen
+import com.example.myapplication.OnBoardingModule.featDetails.PersonalDetailsScreen1
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,13 +82,7 @@ fun App() {
                 }
             )
         }
-        composable("personal_details_2") {
-            PersonalDetailsScreen2(
-                onSubmitClicked = {
-                    // Navigate to Home or Dashbaord
-                }
-            )
-        }
+
     }
 }
 

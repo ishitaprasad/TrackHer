@@ -46,7 +46,7 @@ fun RegisterScreen(onRegisterClicked: () -> Unit, onSignInClicked: () -> Unit){
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
 
-    Box(modifier = Modifier.background(color_FBF6FC)){
+    Box(modifier = Modifier.background(color_FBF6FC), contentAlignment = Alignment.Center){
         Column(
             modifier = Modifier.fillMaxSize().background(color_FBF6FC),
             horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center
@@ -61,7 +61,7 @@ fun RegisterScreen(onRegisterClicked: () -> Unit, onSignInClicked: () -> Unit){
                 horizontalAlignment = Alignment.CenterHorizontally
             ){
 
-                Row(modifier = Modifier.fillMaxWidth()){
+                Row(modifier = Modifier.width(270.dp)){
 
                     CommonTextField(
                         value=firstName,
@@ -69,7 +69,7 @@ fun RegisterScreen(onRegisterClicked: () -> Unit, onSignInClicked: () -> Unit){
                         label = "firstname",
                         modifier = Modifier.weight(1f)
                     )
-                    Spacer(modifier = Modifier.width(16.dp))
+                    Spacer(modifier = Modifier.width(12.dp))
                     CommonTextField(
                         value=lastName,
                         onValueChange = { lastName = it },
@@ -78,21 +78,6 @@ fun RegisterScreen(onRegisterClicked: () -> Unit, onSignInClicked: () -> Unit){
                     )
                 }
                 CommonTextField(value=email , onValueChange = { email = it }, label = "email")
-                Row(modifier = Modifier.fillMaxWidth()){
-                    CommonTextField(
-                        value=phNo,
-                        onValueChange = { phNo = it },
-                        label = "phno.",
-                        modifier = Modifier.weight(0.35f)
-                    )
-                    Spacer(modifier = Modifier.width(16.dp))
-                    CommonTextField(
-                        value=phoneNumber,
-                        onValueChange = { phoneNumber = it },
-                        label = "phonenumber",
-                        modifier = Modifier.weight(1f)
-                    )
-                }
                 CommonTextField(value=username , onValueChange = { username = it }, label = "username")
                 CommonTextField(value=password , onValueChange = { password = it }, label = "password")
                 CommonTextField(value=confirmPassword , onValueChange = { confirmPassword = it }, label = "Confirm Password")
@@ -103,13 +88,7 @@ fun RegisterScreen(onRegisterClicked: () -> Unit, onSignInClicked: () -> Unit){
                     Text(text= "Already have an account?", color = color_4B5563, modifier = Modifier.padding(end = 4.dp))
                     Text(text= "Sign in", color = color_5035B6, modifier = Modifier.clickable { onSignInClicked() })
                 }
-
-
-
-
             }
-
-
         }
     }
 }

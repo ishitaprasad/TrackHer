@@ -21,13 +21,13 @@ import com.example.myapplication.ui.theme.color_5035B6
 import com.example.myapplication.ui.theme.color_7C3AED
 
 @Composable
-fun PrimaryButton(text:String, enabled: Boolean = true, onClick: () -> Unit){
+fun PrimaryButton(text:String, enabled: Boolean = true, color: Color = color_7C3AED, onClick: () -> Unit){
     Button(onClick =  onClick,
         enabled = enabled,
-        modifier = Modifier.height(56.dp).width(287.dp),
+        modifier = Modifier.height(52.dp).width(270.dp),
         shape= RoundedCornerShape(20.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = color_7C3AED,
+            containerColor = color,
             contentColor = Color.White,
 
             )
