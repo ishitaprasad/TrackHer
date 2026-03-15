@@ -1,73 +1,82 @@
-# TrackHer
 # TrackHer Backend (FastAPI + Machine Learning)
 
-This backend powers the **TrackHer Android application**, providing APIs for:
+This branch contains the **backend API for the TrackHer Android application**.
+It provides endpoints for:
 
-* Menstrual cycle prediction
-* PCOS risk prediction
+• First-time menstrual cycle prediction (no history)
+• LSTM-based cycle prediction using historical data
+• PCOS risk prediction
+• Cycle data storage for future predictions
 
-The backend is built using **FastAPI** and serves trained machine learning models.
+The backend is built using **FastAPI**, **TensorFlow**, and **SQLite**.
 
 ---
 
-# Project Structure
+# Architecture Overview
+
+Android App → FastAPI Backend → SQLite Database → ML Models
+
+The backend performs three main tasks:
+
+1. Accept user data from the Android app
+2. Store cycle history in the database
+3. Run ML models to generate predictions
+
+---
+
+# Backend Folder Structure
 
 ```
 backend/
-│
-├── main.py                # FastAPI backend code
-├── cycle_model.h5         # TensorFlow cycle prediction model
-├── pcos_model.pkl         # PCOS prediction model
-├── feature_scaler.pkl     # Feature scaler for cycle model
-├── target_scaler.pkl      # Target scaler for cycle model
-├── requirements.txt       # Python dependencies
-└── README.md
+
+main.py              # FastAPI server and endpoints
+database.py          # SQLite database setup
+models.py            # Loads trained ML models
+requirements.txt     # Python dependencies
+
+cycle_model.h5       # LSTM cycle prediction model
+feature_scaler.pkl   # Feature scaler used during training
+target_scaler.pkl    # Target scaler used during training
+pcos_model.pkl       # PCOS prediction model
 ```
+
+The SQLite database file **trackher.db** will be created automatically when the backend starts.
 
 ---
 
 # Requirements
 
-* Python **3.10**
-* pip package manager
+Python version recommended: **Python 3.10**
+
+Install dependencies:
+
+```
+pip install -r requirements.txt
+```
+
+If multiple Python versions exist:
+
+```
+python -m pip install -r requirements.txt
+```
 
 ---
 
-# Step 1 — Navigate to Backend Folder
+# Running the Backend
 
-Open terminal and go to the backend directory.
+Navigate to the backend folder:
 
 ```
 cd TrackHer/backend
 ```
 
----
-
-# Step 2 — Install Dependencies
-
-Install all required libraries using:
-
-```
-pip install -r requirements.txt
-
-```
----
-
-# Step 3 — Start the Backend Server
-
-Run the FastAPI server using **uvicorn**:
+Start the FastAPI server:
 
 ```
 uvicorn main:app --reload
 ```
 
-If uvicorn is not recognized:
-
-```
-python -m uvicorn main:app --reload
-```
-
-Server will start at:
+The backend will run at:
 
 ```
 http://127.0.0.1:8000
@@ -75,98 +84,108 @@ http://127.0.0.1:8000
 
 ---
 
-# Step 4 — Test API
+# API Documentation
 
-Open the API documentation in your browser:
+FastAPI automatically generates API documentation.
+
+Open in browser:
 
 ```
 http://127.0.0.1:8000/docs
 ```
 
-This provides an interactive interface to test all endpoints.
+This page allows testing all endpoints directly.
 
 ---
 
-# Available APIs
+# Connecting Android App to Backend
 
-## 1. Cycle Prediction
-
-Endpoint:
-
-```
-POST /predict-cycle
-```
-
-Example request:
-
-```
-{
-  "cycle_history": [28, 29, 30, 27, 28]
-}
-```
-
-Example response:
-
-```
-{
-  "predicted_cycle_length": 29.4
-}
-```
-
----
-
-## 2. PCOS Prediction
-
-Endpoint:
-
-```
-POST /predict-pcos
-```
-
-Example request:
-
-```
-{
-  "predicted_cycle_length": 29,
-  "age": 24,
-  "bmi": 26,
-  "weight_gain": 1,
-  "hair_growth": 0,
-  "skin_darkening": 0,
-  "hair_loss": 1,
-  "pimples": 1,
-  "fast_food": 1,
-  "exercise": 0
-}
-```
-
-Example response:
-
-```
-{
-  "prediction": 1,
-  "result": "PCOS Risk"
-}
-```
-
----
-
-# Connecting to Android App
-
-When running the backend locally, Android Studio should use your **local machine IP** instead of localhost.
+When running locally, the Android app **must use the computer's local IP address** instead of localhost.
 
 Example:
 
 ```
-http://192.168.1.10:8000
+http://192.168.1.15:8000
 ```
 
-This allows the Android emulator or device to communicate with the backend.
+To find your IP:
+
+Windows:
+
+```
+ipconfig
+```
+
+Look for:
+
+```
+IPv4 Address
+```
+
+Use this IP in the Android Retrofit base URL.
+
+Example Retrofit base URL:
+
+```
+http://192.168.1.15:8000/
+```
 
 ---
 
-# Notes
+# Backend Prediction Flow
 
-* Ensure all model files (`.h5`, `.pkl`) are present in the backend directory.
-* Use Python **3.10** for compatibility with TensorFlow.
-* Restart the server after modifying backend code.
+### First Time User
+
+The user installs the app and answers onboarding questions.
+
+Android sends:
+
+```
+POST /predict-first-cycle
+```
+
+Backend performs rule-based prediction and returns:
+
+• predicted cycle length
+• next period date
+• ovulation date
+• fertility window
+• menses duration
+• luteal phase
+
+No history is required.
+
+---
+
+### Saving Cycle Data
+
+Whenever a user logs a cycle, Android sends:
+
+```
+POST /add-cycle
+```
+
+The backend stores cycle data in SQLite.
+
+This data is used to build the LSTM history window.
+
+---
+
+### LSTM Prediction
+
+Once the user has **at least 3 cycles recorded**, the Android app can request:
+
+```
+POST /predict-cycle-lstm
+```
+
+Backend retrieves the last 3 cycles and feeds them to the LSTM model.
+
+The model predicts:
+
+• cycle length
+• ovulation day
+• luteal phase
+• menses duration
+
+Dates are calculated and returned to the app.
