@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException
 import numpy as np
 from datetime import datetime, timedelta
-
+import tensorflow as tf
 from database import init_db, get_connection
 from models import cycle_model, feature_scaler, target_scaler, pcos_model
 from schemas import PredictCycleInput, AddCycleInput, PCOSPredictionInput
@@ -114,7 +114,11 @@ def lstm_prediction(user_id, last_period_date):
         np.array(history).reshape(-1, FEATURES)
     ).reshape(1, WINDOW_SIZE, FEATURES)
 
-    pred_scaled = cycle_model.predict(scaled)
+    pred_scaled = cycle_model.signatures["serving_default"](
+        tf.constant(scaled)
+    )
+
+    pred_scaled = list(pred_scaled.values())[0].numpy()
 
     pred = target_scaler.inverse_transform(pred_scaled)
 
