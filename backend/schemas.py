@@ -16,14 +16,10 @@ class FirstCycleInput(BaseModel):
 
 
 class AddCycleInput(BaseModel):
-
-    user_id:int
-    cycle_length:int
-    menses_length:int
-    ovulation_day:int
-    luteal_phase:int
-    peak:int
-    period_start_date:str
+    user_id: int
+    cycle_length: int
+    menses_length: int
+    period_start_date: str
 
 
 class PredictCycleInput(BaseModel):
