@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException
 import numpy as np
 from datetime import datetime, timedelta
 import tensorflow as tf
+
 from database import init_db, get_connection
 from models import cycle_model, feature_scaler, target_scaler, pcos_model
 from schemas import PredictCycleInput, AddCycleInput, PCOSPredictionInput
@@ -13,6 +14,15 @@ FEATURES = 7
 app = FastAPI()
 
 init_db()
+
+
+# ==========================
+# HEALTH CHECK
+# ==========================
+
+@app.get("/")
+def root():
+    return {"status": "TrackHer API running"}
 
 
 # ==========================
@@ -86,6 +96,8 @@ def lstm_prediction(user_id, last_period_date):
     """, (user_id,))
 
     rows = cur.fetchall()
+
+    conn.close()
 
     if len(rows) < WINDOW_SIZE:
         raise HTTPException(status_code=400, detail="Not enough history")
@@ -173,6 +185,8 @@ def predict_cycle(data: PredictCycleInput):
 
     cycle_count = cur.fetchone()[0]
 
+    conn.close()
+
     if cycle_count < WINDOW_SIZE:
 
         return first_cycle_prediction(data)
@@ -223,6 +237,81 @@ def add_cycle(data: AddCycleInput):
 
 
 # ==========================
+# GET ALL USER CYCLES
+# ==========================
+
+@app.get("/cycles/{user_id}")
+
+def get_cycles(user_id: int):
+
+    conn = get_connection()
+    cur = conn.cursor()
+
+    cur.execute("""
+
+    SELECT id,
+           cycle_length,
+           menses_length,
+           ovulation_day,
+           luteal_phase,
+           period_start_date
+    FROM cycles
+    WHERE user_id=?
+    ORDER BY id DESC
+
+    """, (user_id,))
+
+    rows = cur.fetchall()
+
+    conn.close()
+
+    cycles = []
+
+    for r in rows:
+
+        cycles.append({
+
+            "cycle_id": r[0],
+            "cycle_length": r[1],
+            "menses_length": r[2],
+            "ovulation_day": r[3],
+            "luteal_phase": r[4],
+            "period_start_date": r[5]
+
+        })
+
+    return {"cycles": cycles}
+
+
+# ==========================
+# GET LAST 3 CYCLES
+# ==========================
+
+@app.get("/cycles/{user_id}/recent")
+
+def get_recent_cycles(user_id: int):
+
+    conn = get_connection()
+    cur = conn.cursor()
+
+    cur.execute("""
+
+    SELECT cycle_length,menses_length,ovulation_day,luteal_phase
+    FROM cycles
+    WHERE user_id=?
+    ORDER BY id DESC
+    LIMIT 3
+
+    """, (user_id,))
+
+    rows = cur.fetchall()
+
+    conn.close()
+
+    return {"recent_cycles": rows}
+
+
+# ==========================
 # PCOS PREDICTION
 # ==========================
 
@@ -231,6 +320,7 @@ def add_cycle(data: AddCycleInput):
 def predict_pcos(data: PCOSPredictionInput):
 
     features = np.array([[
+
         data.age,
         data.bmi,
         data.weight_gain,
@@ -240,6 +330,7 @@ def predict_pcos(data: PCOSPredictionInput):
         data.pimples,
         data.fast_food,
         data.exercise
+
     ]])
 
     prediction = int(pcos_model.predict(features)[0])
