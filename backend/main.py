@@ -1,167 +1,244 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-import numpy as np
-import joblib
-import tensorflow as tf
-from datetime import datetime, timedelta
 from typing import List
+import numpy as np
+from datetime import datetime, timedelta
 
-# ==========================================================
-# CONFIG
-# ==========================================================
+from database import init_db, get_connection
+from models import cycle_model, feature_scaler, target_scaler, pcos_model
 
-WINDOW_SIZE = 10   # must match training notebook
-FEATURES = 7       # number of features per cycle
 
-# ==========================================================
-# LOAD MODELS
-# ==========================================================
+WINDOW_SIZE = 3
+FEATURES = 7
 
-cycle_model = tf.keras.models.load_model("cycle_model.h5")
+app = FastAPI()
 
-feature_scaler = joblib.load("feature_scaler.pkl")
-target_scaler = joblib.load("target_scaler.pkl")
+init_db()
 
-pcos_model = joblib.load("pcos_model.pkl")
 
-# ==========================================================
-# FASTAPI APP
-# ==========================================================
+# ============================
+# REQUEST MODELS
+# ============================
 
-app = FastAPI(
-    title="TrackHer ML Backend",
-    description="Backend API for cycle prediction and PCOS risk prediction",
-    version="1.0"
-)
+class FirstCycleInput(BaseModel):
 
-# ==========================================================
-# REQUEST SCHEMAS
-# ==========================================================
+    user_id:int
+    last_period_start_date:str
+    cycle_length_range:str
+    period_duration:str
+    flow:str
+    regularity:str
+    age:float
+    bmi:float
+
 
 class CyclePredictionInput(BaseModel):
 
-    last_period_start_date: str
+    user_id:int
+    last_period_start_date:str
 
-    user_history: List[List[float]]
-    # shape = WINDOW_SIZE x FEATURES
+
+class AddCycleInput(BaseModel):
+
+    user_id:int
+    cycle_length:int
+    menses_length:int
+    ovulation_day:int
+    luteal_phase:int
+    peak:int
+    period_start_date:str
 
 
 class PCOSPredictionInput(BaseModel):
 
-    age: float
-    bmi: float
-    weight_gain: int
-    hair_growth: int
-    skin_darkening: int
-    hair_loss: int
-    pimples: int
-    fast_food: int
-    exercise: int
+    user_id:int
+    age:float
+    bmi:float
+    weight_gain:int
+    hair_growth:int
+    skin_darkening:int
+    hair_loss:int
+    pimples:int
+    fast_food:int
+    exercise:int
 
 
-# ==========================================================
-# HEALTH CHECK
-# ==========================================================
+# ============================
+# FIRST TIME PREDICTION
+# ============================
 
-@app.get("/")
-def home():
-    return {"message": "TrackHer Backend Running"}
+@app.post("/predict-first-cycle")
 
-# ==========================================================
-# CYCLE PREDICTION FUNCTION
-# ==========================================================
+def predict_first_cycle(data:FirstCycleInput):
 
-def predict_user_next_cycle_with_dates(user_history, last_period_start_date):
+    cycle_map = {
 
-    user_history = np.array(user_history)
+        "21–28 days":26,
+        "29–35 days":32,
+        "36-40 days":38,
+        "I am not sure":30
+    }
 
-    if user_history.shape != (WINDOW_SIZE, FEATURES):
-        raise ValueError(
-            f"Input must be shape ({WINDOW_SIZE}, {FEATURES})"
-        )
+    menses_map = {
 
-    # Scale input
-    user_scaled = feature_scaler.transform(
-        user_history.reshape(-1, FEATURES)
-    ).reshape(1, WINDOW_SIZE, FEATURES)
+        "Less than 3 days":2,
+        "3-5 days":4,
+        "6-7 days":6,
+        "More than 7 days":8
+    }
 
-    # Predict
-    pred_scaled = cycle_model.predict(user_scaled)
+    predicted_cycle = cycle_map[data.cycle_length_range]
+    predicted_menses = menses_map[data.period_duration]
 
-    pred = target_scaler.inverse_transform(pred_scaled)
+    predicted_ovulation = predicted_cycle - 14
+    predicted_luteal = 14
 
-    predicted_cycle = round(float(pred[0][0]))
-    predicted_ovulation_day = round(float(pred[0][1]))
-    predicted_luteal = round(float(pred[0][2]))
-    predicted_menses = round(float(pred[0][3]))
+    last_period = datetime.strptime(data.last_period_start_date,"%Y-%m-%d")
 
-    # Convert last period date
-    last_period_date = datetime.strptime(
-        last_period_start_date, "%Y-%m-%d"
-    )
+    next_period = last_period + timedelta(days=predicted_cycle)
+    ovulation_date = last_period + timedelta(days=predicted_ovulation)
 
-    # Next period
-    next_period_date = last_period_date + timedelta(days=predicted_cycle)
-
-    # Ovulation date
-    ovulation_date = last_period_date + timedelta(days=predicted_ovulation_day)
-
-    # Fertile window
     fertile_start = ovulation_date - timedelta(days=5)
     fertile_end = ovulation_date + timedelta(days=1)
 
     return {
 
-        "predicted_cycle_length": predicted_cycle,
-
-        "next_period_start_date":
-            next_period_date.strftime("%Y-%m-%d"),
-
-        "predicted_ovulation_date":
-            ovulation_date.strftime("%Y-%m-%d"),
-
-        "fertile_window_start":
-            fertile_start.strftime("%Y-%m-%d"),
-
-        "fertile_window_end":
-            fertile_end.strftime("%Y-%m-%d"),
-
-        "predicted_menses_duration":
-            predicted_menses,
-
-        "predicted_luteal_phase":
-            predicted_luteal
+        "predicted_cycle_length":predicted_cycle,
+        "next_period_start_date":next_period.strftime("%Y-%m-%d"),
+        "predicted_ovulation_date":ovulation_date.strftime("%Y-%m-%d"),
+        "fertile_window_start":fertile_start.strftime("%Y-%m-%d"),
+        "fertile_window_end":fertile_end.strftime("%Y-%m-%d"),
+        "predicted_menses_duration":predicted_menses,
+        "predicted_luteal_phase":predicted_luteal
     }
 
-# ==========================================================
-# API ENDPOINT: CYCLE PREDICTION
-# ==========================================================
 
-@app.post("/predict-cycle")
-def predict_cycle(data: CyclePredictionInput):
+# ============================
+# SAVE CYCLE
+# ============================
 
-    try:
+@app.post("/add-cycle")
 
-        result = predict_user_next_cycle_with_dates(
-            data.user_history,
-            data.last_period_start_date
-        )
+def add_cycle(data:AddCycleInput):
 
-        return result
+    conn = get_connection()
+    cur = conn.cursor()
 
-    except Exception as e:
+    cur.execute("""
+    INSERT INTO cycles
+    (user_id,cycle_length,menses_length,ovulation_day,luteal_phase,peak,period_start_date)
+    VALUES(?,?,?,?,?,?,?)
+    """,(
+
+        data.user_id,
+        data.cycle_length,
+        data.menses_length,
+        data.ovulation_day,
+        data.luteal_phase,
+        data.peak,
+        data.period_start_date
+
+    ))
+
+    conn.commit()
+    conn.close()
+
+    return {"status":"cycle saved"}
+
+
+# ============================
+# LSTM PREDICTION
+# ============================
+
+@app.post("/predict-cycle-lstm")
+
+def predict_cycle(data:CyclePredictionInput):
+
+    conn = get_connection()
+    cur = conn.cursor()
+
+    cur.execute("""
+
+    SELECT cycle_length,menses_length,ovulation_day,luteal_phase
+    FROM cycles
+    WHERE user_id=?
+    ORDER BY id DESC
+    LIMIT 3
+
+    """,(data.user_id,))
+
+    rows = cur.fetchall()
+
+    if len(rows) < WINDOW_SIZE:
 
         raise HTTPException(
             status_code=400,
-            detail=str(e)
+            detail="Not enough history for LSTM"
         )
 
-# ==========================================================
-# API ENDPOINT: PCOS PREDICTION
-# ==========================================================
+    history = []
+
+    for r in rows:
+
+        cycle,menses,ovulation,luteal = r
+
+        history.append([
+
+            cycle,
+            menses,
+            ovulation,
+            luteal,
+            25,   # age placeholder
+            24,   # bmi placeholder
+            1
+
+        ])
+
+    history = history[::-1]
+
+    user_scaled = feature_scaler.transform(
+
+        np.array(history).reshape(-1,FEATURES)
+
+    ).reshape(1,WINDOW_SIZE,FEATURES)
+
+    pred_scaled = cycle_model.predict(user_scaled)
+
+    pred = target_scaler.inverse_transform(pred_scaled)
+
+    predicted_cycle = round(float(pred[0][0]))
+    predicted_ovulation = round(float(pred[0][1]))
+    predicted_luteal = round(float(pred[0][2]))
+    predicted_menses = round(float(pred[0][3]))
+
+    last_period = datetime.strptime(data.last_period_start_date,"%Y-%m-%d")
+
+    next_period = last_period + timedelta(days=predicted_cycle)
+
+    ovulation_date = last_period + timedelta(days=predicted_ovulation)
+
+    fertile_start = ovulation_date - timedelta(days=5)
+    fertile_end = ovulation_date + timedelta(days=1)
+
+    return {
+
+        "predicted_cycle_length":predicted_cycle,
+        "next_period_start_date":next_period.strftime("%Y-%m-%d"),
+        "predicted_ovulation_date":ovulation_date.strftime("%Y-%m-%d"),
+        "fertile_window_start":fertile_start.strftime("%Y-%m-%d"),
+        "fertile_window_end":fertile_end.strftime("%Y-%m-%d"),
+        "predicted_menses_duration":predicted_menses,
+        "predicted_luteal_phase":predicted_luteal
+    }
+
+
+# ============================
+# PCOS PREDICTION
+# ============================
 
 @app.post("/predict-pcos")
-def predict_pcos(data: PCOSPredictionInput):
+
+def predict_pcos(data:PCOSPredictionInput):
 
     features = np.array([[
         data.age,
@@ -177,12 +254,9 @@ def predict_pcos(data: PCOSPredictionInput):
 
     prediction = int(pcos_model.predict(features)[0])
 
-    if prediction == 1:
-        risk = "High Risk of PCOS"
-    else:
-        risk = "Low Risk of PCOS"
-
     return {
-        "pcos_prediction": prediction,
-        "risk_level": risk
+
+        "pcos_prediction":prediction,
+        "risk":"High Risk" if prediction==1 else "Low Risk"
+
     }
