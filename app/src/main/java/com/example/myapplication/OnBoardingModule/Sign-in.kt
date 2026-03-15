@@ -28,13 +28,15 @@ import com.example.myapplication.ui.theme.color_5035B6
 import com.example.myapplication.ui.theme.color_FBF6FC
 
 import androidx.compose.foundation.clickable
+import com.example.myapplication.ui.theme.color_FDF2F8
+import com.example.myapplication.ui.theme.color_FF6B9D
 
 @Composable
 fun SignInScreen(onSignInClicked: () -> Unit, onRegisterClicked: () -> Unit){
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
-    Box(modifier = Modifier.background(color_FBF6FC)){
+    Box(modifier = Modifier.background(color_FDF2F8)){
 
         Column(
             modifier = Modifier
@@ -50,15 +52,14 @@ fun SignInScreen(onSignInClicked: () -> Unit, onRegisterClicked: () -> Unit){
             Spacer(modifier = Modifier.padding(vertical = 8.dp))
             Text(
                 text="View cycle visualizations and chat with our AI assistant for personalized health insights.",
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center, modifier = Modifier.padding(bottom=15.dp)
             )
-            Spacer(modifier = Modifier.padding(vertical = 18.dp))
             HeadingText(
-                text = "Welcome !"
+                text = "Welcome!"
             )
-            Text(text= "Sign in to continue", modifier = Modifier.padding(top=4.dp))
+//            Text(text= "Sign in to continue", modifier = Modifier.padding(top=4.dp))
 
-            Spacer(modifier = Modifier.padding(vertical = 8.dp))
+            Spacer(modifier = Modifier.padding(vertical = 6.dp))
 
             CommonTextField(
                 value = email,
@@ -76,7 +77,7 @@ fun SignInScreen(onSignInClicked: () -> Unit, onRegisterClicked: () -> Unit){
 
             PrimaryButton(
                 text = "Sign In",
-                onClick = { onSignInClicked() }
+                onClick = { onSignInClicked() }, color = color_FF6B9D
             )
 
             Text(text= "Forgot password?", modifier = Modifier.padding(top=12.dp, bottom = 8.dp),

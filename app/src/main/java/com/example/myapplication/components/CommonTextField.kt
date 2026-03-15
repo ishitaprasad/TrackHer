@@ -24,7 +24,7 @@ fun CommonTextField(
     label: String ="",
     visualTransformation: VisualTransformation = VisualTransformation.None,
 ) {
-    Column(modifier = modifier.width(270.dp).padding(bottom = 8.dp)) {
+    Column(modifier = modifier.padding(bottom = 8.dp,start=6.dp,end=6.dp,top=10.dp)) {
         if (label.isNotEmpty()) {
             Text(
                 text = label,
@@ -35,7 +35,7 @@ fun CommonTextField(
             value = value,
             onValueChange = onValueChange,
             visualTransformation = visualTransformation,
-            modifier = Modifier.fillMaxWidth().height(48.dp),
+            modifier = Modifier.fillMaxWidth().padding(top=8.dp),
             colors = OutlinedTextFieldDefaults.colors(
                 focusedContainerColor = Color.Transparent,
                 unfocusedContainerColor = Color.Transparent,

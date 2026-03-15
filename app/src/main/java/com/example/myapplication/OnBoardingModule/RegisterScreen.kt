@@ -34,6 +34,7 @@ import com.example.myapplication.ui.theme.color_4B5563
 import com.example.myapplication.ui.theme.color_5035B6
 
 import androidx.compose.foundation.clickable
+import com.example.myapplication.ui.theme.color_FDF2F8
 
 @Composable
 fun RegisterScreen(onRegisterClicked: () -> Unit, onSignInClicked: () -> Unit){
@@ -46,32 +47,29 @@ fun RegisterScreen(onRegisterClicked: () -> Unit, onSignInClicked: () -> Unit){
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
 
-    Box(modifier = Modifier.background(color_FBF6FC), contentAlignment = Alignment.Center){
+    Box(modifier = Modifier.background(color_FDF2F8), contentAlignment = Alignment.Center){
         Column(
-            modifier = Modifier.fillMaxSize().background(color_FBF6FC),
+            modifier = Modifier.fillMaxSize().background(color_FDF2F8).padding(start=23.dp,end=23.dp),
             horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center
         ){
-            Spacer(modifier = Modifier.height(36.dp))
             HeadingText(text= "Create Your Account")
-            Spacer(modifier = Modifier.height(2.dp))
 
             Column(
-                modifier = Modifier.padding(24.dp).fillMaxWidth(),
+                modifier = Modifier.padding(top=18.dp,start=12.dp,end=12.dp).fillMaxWidth(),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ){
 
-                Row(modifier = Modifier.width(270.dp)){
-
+                Row(modifier = Modifier.padding(start=2.dp,end=2.dp)) {
                     CommonTextField(
-                        value=firstName,
+                        value = firstName,
                         onValueChange = { firstName = it },
                         label = "firstname",
                         modifier = Modifier.weight(1f)
                     )
-                    Spacer(modifier = Modifier.width(12.dp))
+                    Spacer(modifier = Modifier.width(10.dp))
                     CommonTextField(
-                        value=lastName,
+                        value = lastName,
                         onValueChange = { lastName = it },
                         label = "lastname",
                         modifier = Modifier.weight(1f)

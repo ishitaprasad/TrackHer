@@ -36,6 +36,9 @@ val color_5035B6 = Color(0xFF5035B6)
 
 val color_FBF6FC = Color(0xFFFBF6FC)
 
+val color_FCF7FB = Color(0xFFFCF7FB)
+
+
 val color_D1D5DB = Color(0xFFD1D5DB)
 
 val color_4B5563 = Color(0xFF4B5563)
@@ -54,3 +57,11 @@ val color_FDF2F8 = Color(0xFFFDF2F8)
 val color_E5E7EB = Color(0xFFE5E7EB)
 
 val color_FFE5EF = Color(0xFFFFE5EF)
+
+val color_1F2937 = Color(0xFF1F2937)
+
+val color_000000 = Color(0xFF000000)
+
+val color_FF6B9D = Color(0xFFFF6B9D)
+
+val color_C084FC = Color(0xFFC084FC)

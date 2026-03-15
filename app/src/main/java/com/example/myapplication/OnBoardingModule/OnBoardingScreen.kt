@@ -1,4 +1,4 @@
-package com.example.myapplication.onboarding
+package com.example.myapplication.OnBoardingModule
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -16,20 +16,24 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.myapplication.R
 import com.example.myapplication.components.HeadingText
 import com.example.myapplication.components.PrimaryButton
 import com.example.myapplication.ui.theme.RoyalPurple
 import com.example.myapplication.ui.theme.color_FBF6FC
+import com.example.myapplication.ui.theme.color_FDF2F8
 import kotlinx.coroutines.delay
 
 data class OnBoardingPage(
@@ -43,13 +47,16 @@ val OnBoardingPages = listOf(
         description = "Your smart companion for understanding and managing your menstrual cycle."
     ),
     OnBoardingPage(
-        heading = "Track Your Cycle",
-        description = "Log symptoms easily"
+        heading = "Log Your Cycle Easily",
+        description = "Record period dates, flow levels, and symptoms with a simple, intuitive interface."
     ),
     OnBoardingPage(
-        heading = "Smart Insights",
-        description = "Get predictions and health insights"
-    )
+        heading = "Get Accurate, AI-Powered Predictions",
+        description = "TrackHer analyzes your history to forecast upcoming periods and flag irregularities early."
+    ),
+    OnBoardingPage(
+        heading = "See Your Cycle at a Glance",
+        description = "Access a clean dashboard with your next predicted period, cycle stats, and alerts.")
 )
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -67,8 +74,8 @@ fun OnBoardingScreen(modifier: Modifier = Modifier, onContinueClicked: () -> Uni
     }
 
     Box(modifier
-        .background(color_FBF6FC)
-        .fillMaxSize(),
+        .background(color_FDF2F8)
+        .fillMaxSize().padding(start = 25.dp, end=25.dp),
         contentAlignment = Alignment.Center
     ){
         Column(
@@ -76,31 +83,33 @@ fun OnBoardingScreen(modifier: Modifier = Modifier, onContinueClicked: () -> Uni
             horizontalAlignment = Alignment.CenterHorizontally)
         {
             HorizontalPager(state = pagerState,
-                modifier = Modifier.height(220.dp)
+                modifier = Modifier.padding(16.dp)
             )
             {
                     page->
                 Box(modifier = Modifier
-                    .fillMaxWidth().fillMaxHeight(),
+                    .fillMaxWidth(),
                     contentAlignment = Alignment.Center){
 
-                    Column(modifier= Modifier.padding(16.dp).fillMaxSize(),
+
+                    Column(modifier= Modifier.padding(16.dp).fillMaxWidth(),
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
                     )
                     {
                         HeadingText(OnBoardingPages[page].heading)
-                        Spacer(Modifier.height(16.dp))
+                      
                         Text(text=OnBoardingPages[page].description,
                             fontWeight = FontWeight.Medium, fontSize = 20.sp, textAlign = TextAlign.Center,
-                            modifier= Modifier.fillMaxWidth(0.75f))
+                            modifier= Modifier.fillMaxWidth().padding(top=15.dp, bottom = 15.dp))
                     }
                 }
             }
 
-            Spacer(Modifier.height(12.dp))
             Navigator(pagecount = OnBoardingPages.size, currentpage = pagerState.currentPage)
-            Spacer(Modifier.height(50.dp))
+
+            Spacer(Modifier.height(32.dp))
+
             PrimaryButton(text = "Continue") {
                 onContinueClicked()
             }
