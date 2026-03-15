@@ -49,14 +49,8 @@ Install all required libraries using:
 
 ```
 pip install -r requirements.txt
-```
-
-If multiple Python versions exist on your system, run:
 
 ```
-C:\Users\IshitaPrasad\AppData\Local\Programs\Python\Python310\python.exe -m pip install -r requirements.txt
-```
-
 ---
 
 # Step 3 — Start the Backend Server
