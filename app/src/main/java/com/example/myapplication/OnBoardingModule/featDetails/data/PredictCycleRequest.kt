@@ -3,27 +3,31 @@ package com.example.myapplication.OnBoardingModule.featDetails.data
 import com.google.gson.annotations.SerializedName
 
 data class PredictCycleRequest(
+
     @SerializedName("user_id")
     val userId: Int,
 
     @SerializedName("last_period_start_date")
-    val lastPeriodStartDate: String, // Format: "2026-03-01"
+    val lastPeriodStartDate: String,
 
     @SerializedName("cycle_length_range")
-    val cycleLengthRange: String, // "21–28 days", "29–35 days", "36-40 days", "I am not sure"
+    val cycleLengthRange: String,   // "21–28 days"
 
     @SerializedName("period_duration")
-    val periodDuration: String, // "Less than 3 days", "3-5 days", "6-7 days", "More than 7 days"
+    val periodDuration: String      // "3-5 days"
+)
 
-    @SerializedName("flow")
-    val flow: String, // "Light", "Moderate", "Heavy"
+data class PredictCycleResponse(
+    val prediction_type: String,
 
-    @SerializedName("regularity")
-    val regularity: String, // "Yes, pretty regular", "No, they vary a lot", "I don't know"
+    val predicted_cycle_length: Int,
+    val next_period_start_date: String,
 
-    @SerializedName("age")
-    val age: Float,
+    val predicted_ovulation_date: String,
 
-    @SerializedName("bmi")
-    val bmi: Float
+    val fertile_window_start: String,
+    val fertile_window_end: String,
+
+    val predicted_menses_duration: Int,
+    val predicted_luteal_phase: Int
 )

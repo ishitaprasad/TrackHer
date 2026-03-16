@@ -215,11 +215,7 @@ class DetailsViewModel : ViewModel() {
             userId = userId,
             lastPeriodStartDate = lastPeriodStartDate,
             cycleLengthRange = cycleLengthRange,
-            periodDuration = periodDuration,
-            flow = flow,
-            regularity = regularity,
-            age = age,
-            bmi = bmi
+            periodDuration = periodDuration
         )
     }
 
@@ -261,6 +257,9 @@ class DetailsViewModel : ViewModel() {
                 val pcosResponse = RetrofitClient.apiService.predictPcos(pcosRequest)
                 
                 if (cycleResponse.isSuccessful && pcosResponse.isSuccessful) {
+                    cycleResponse.body()?.next_period_start_date?.let { date ->
+                        com.example.myapplication.data.DataRepository.updateNextPeriodStartDate(date)
+                    }
                     onSuccess()
                 } else {
                     onError("One or more requests failed. Cycle: ${cycleResponse.code()}, PCOS: ${pcosResponse.code()}")

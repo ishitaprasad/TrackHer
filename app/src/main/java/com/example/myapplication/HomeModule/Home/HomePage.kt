@@ -107,7 +107,7 @@ fun HomeScreen(viewModel: HomeViewModel = viewModel()){
                     }
 
                     Row(modifier= Modifier.fillMaxWidth().padding(bottom=10.dp),horizontalArrangement = Arrangement.Start){
-                        Text(text="Feb 20, 2026", fontSize = 24.sp, fontWeight = FontWeight.W800, color = color_4B5563)
+                        Text(text=uiState.nextPeriodStartDate, fontSize = 24.sp, fontWeight = FontWeight.W800, color = color_4B5563)
                     }
 
                     Row(modifier= Modifier.fillMaxWidth(),horizontalArrangement = Arrangement.Start){

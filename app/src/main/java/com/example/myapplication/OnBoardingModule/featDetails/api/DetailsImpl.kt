@@ -7,11 +7,9 @@ import retrofit2.Response
 
 class DetailsImpl : DetailsApi {
 
-    override suspend fun predictCycle(request: PredictCycleRequest): Response<Any> {
-        return RetrofitClient.apiService.predictCycle(request)
-    }
+    override suspend fun predictCycle(request: PredictCycleRequest) =
+        RetrofitClient.apiService.predictCycle(request)
 
-    override suspend fun predictPcos(request: PredictPcosRequest): Response<Any> {
-        return RetrofitClient.apiService.predictPcos(request)
-    }
+    override suspend fun predictPcos(request: PredictPcosRequest) =
+        RetrofitClient.apiService.predictPcos(request)
 }

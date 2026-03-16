@@ -3,9 +3,6 @@ package com.example.myapplication.OnBoardingModule.featDetails.data
 import com.google.gson.annotations.SerializedName
 
 data class PredictPcosRequest(
-    @SerializedName("user_id")
-    val userId: Int,
-
     @SerializedName("age")
     val age: Int,
 
@@ -32,4 +29,13 @@ data class PredictPcosRequest(
 
     @SerializedName("exercise")
     val exercise: Int // 1 for Yes, 0 for No
+)
+
+data class PredictPcosResponse(
+
+    @SerializedName("pcos_prediction")
+    val pcosPrediction: Int,
+
+    @SerializedName("risk")
+    val risk: String
 )
